@@ -1,13 +1,13 @@
-const API_URL = "https://generategif-vqn2qei5nq-uc.a.run.app";
+const API_URL = import.meta.env.VITE_API_URL;
 
-export const generateGif = async (imageUrls: string[], title: string) => {
+export const createGif = async (imageUrls: string[]) => {
   try {
-    const response = await fetch(API_URL, {
+    const response = await fetch(`${API_URL}/generateGif`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ imageUrls, title }),
+      body: JSON.stringify({ imageUrls }),
     });
 
     if (!response.ok) {
@@ -16,7 +16,7 @@ export const generateGif = async (imageUrls: string[], title: string) => {
 
     return await response.json(); // return { id, gifUrl }
   } catch (error) {
-    console.error("Error in API:", error);
+    console.error("Error in API generateGif:", error);
     throw error;
   }
 };

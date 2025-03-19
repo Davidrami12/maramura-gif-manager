@@ -30,11 +30,16 @@ export const generateGif = functions.https.onRequest((req: Request, res: Respons
     }
 
     try {
+      // Autogenerate title by current date + time
+      const now = new Date();
+      const formattedDate = now.toISOString().replace(/T/, '_').replace(/:/g, '-').split('.')[0];
+      const autoTitle = `GIF_${formattedDate}`;
+
       // Validate request and URLs
-      const { imageUrls, title } = req.body;
-      if (!imageUrls || !title || !Array.isArray(imageUrls)) {
+      const { imageUrls } = req.body;
+      if (!imageUrls || !Array.isArray(imageUrls)) {
         console.error("Invalid data on request: ", req.body);
-        res.status(400).send("Title and image URL are required.");
+        res.status(400).send("Image URLs are required.");
         return;
       }
 
@@ -89,12 +94,12 @@ export const generateGif = functions.https.onRequest((req: Request, res: Respons
       // Save on Firestore
       const docRef = await db.collection("gifs").add({
         imagenes: imageUrls,
-        gif: { src: gifUrl, title },
+        gif: { src: gifUrl, title: autoTitle },
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
       });
 
       console.log("New GIF document created with ID: ", docRef.id);
-      res.status(200).json({ id: docRef.id, gifUrl });
+      res.status(200).json({ id: docRef.id, gifUrl, title: autoTitle });
       return;
 
     } catch (error) {
@@ -103,4 +108,6 @@ export const generateGif = functions.https.onRequest((req: Request, res: Respons
       return;
   }})
 })
+
+
 
