@@ -1,12 +1,9 @@
 import { useState } from "react";
+import { GifGeneratorProps } from "../types/types";
 import { generateGif } from "../services/api";
 import { toast } from "react-toastify";
 
-interface GifGeneratorProps {
-  imageUrls: string[];
-}
-
-export default function GifGenerator({ imageUrls }: GifGeneratorProps) {
+export const GifGenerator = ({ imageUrls }: GifGeneratorProps) => {
   const [gifUrl, setGifUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 

@@ -1,13 +1,10 @@
 import { useState } from "react";
 import { validateFiles } from "../utils/validations";
+import { FileUploaderProps } from "../types/types";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-interface FileUploaderProps {
-  onUpload: (files: File[]) => void;
-}
-
-export default function FileUploader({ onUpload }: FileUploaderProps) {
+export const FileUploader = ({ onUpload }: FileUploaderProps) => {
   const [previews, setPreviews] = useState<string[]>([]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

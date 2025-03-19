@@ -1,6 +1,6 @@
 import { useState } from "react";
-import FileUploader from "./components/FileUploader";
-import GifGenerator from "./components/GifGenerator";
+import { FileUploader } from "./components/FileUploader";
+import { GifGenerator } from "./components/GifGenerator";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css"
