@@ -17,6 +17,7 @@ console.log("FireStore connection successful.");
 
 const corsHandler = cors({ origin: true });
 
+// Functionality to create a GIF file based on a list of images and save on db 
 export const createGif = functions.https.onRequest((req: Request, res: Response) => {
   corsHandler(req, res, async () => {
     if (req.method === "OPTIONS") {
@@ -110,7 +111,7 @@ export const createGif = functions.https.onRequest((req: Request, res: Response)
 })
 
 
-
+// Functionality to get a list of all GIFs on Firestore
 export const getAllGifs = functions.https.onRequest((req: Request, res: Response) => {
   corsHandler(req, res, async () => { 
     if (req.method === "OPTIONS") {
@@ -135,6 +136,52 @@ export const getAllGifs = functions.https.onRequest((req: Request, res: Response
     } catch (error) {
       console.error("Error getting GIFs: ", error);
       res.status(500).send("Status 500 - Internal Server Error");
+    }
+  })
+})
+
+
+// Functionality to delete a GIF from db by ID
+export const deleteGif = functions.https.onRequest((req: Request, res: Response) => {
+  corsHandler(req, res, async () => {
+    if (req.method === "OPTIONS") {
+      res.status(204).send(""); // Catch CORS preflight requests
+      return;
+    }
+
+    if (req.method !== "DELETE") {
+      return res.status(405).send("Method not allowed!");
+    }
+
+    try {
+      const { id } = req.body;
+      if (!id) {
+        return res.status(400).send("GIF ID is required");
+      }
+
+      const docRef = db.collection("gifs").doc(id);
+      const doc = await docRef.get();
+
+      if (!doc.exists) {
+        return res.status(404).send("GIF not found");
+      }
+
+      const gifData = doc.data();
+      if (!gifData?.gif?.src) {
+        return res.status(400).send("URL Gif not found");
+      }
+
+      const fileName = gifData.gif.src.split("/").pop();
+      const file = bucket.file(`gifs/${fileName}`);
+      await file.delete();
+      await docRef.delete();
+      console.log(`GIF deleted from Firestore: ${id}`);
+
+      return res.status(200).json({ message: "Delete GIF successful!" });
+
+    } catch (error) {
+      console.error("Error deleting GIF: ", error);
+      return res.status(500).send("Status 500 - Internal Server Error");
     }
   })
 })
