@@ -34,7 +34,7 @@ export const GifGallery = ({ gifs }: GifGalleryProps) => {
         {gifs.map(({ id, gif }) =>
           gif?.src ? (
             <div key={id} style={{ textAlign: "center" }}>
-              <img src={gif.src} alt={gif.title} width={200} height={200}/>
+              <img src={gif.src} alt={gif.title} width={200} height={200} loading="lazy" />
               <p>{gif.title}</p>
               
               <button

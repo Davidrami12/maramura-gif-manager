@@ -3,6 +3,7 @@ import { getAllGifs, createGif, deleteGif } from "../../services/api";
 
 export const fetchGifs = createAsyncThunk("gifs/fetchGifs", async () => {
   const gifs = await getAllGifs();
+  if (gifs.length > 0) return gifs; // Use cache if there are any GIFs data
   return gifs;
 });
 
