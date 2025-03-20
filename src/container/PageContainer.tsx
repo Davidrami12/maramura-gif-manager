@@ -1,34 +1,28 @@
 import { FileUploader, GifGallery, GifGenerator } from "../components";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebaseConfig";
-import { useState, useEffect } from "react";
-import { getAllGifs } from "../services/api";
-import { Gif } from "../types/types";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "../store/store";
+import { fetchGifs } from "../store/thunks/gifsThunks";
+import { useEffect, useState } from "react";
 
 export const PageContainer = () => {
-  const [imageUrls, setImageUrls] = useState<string[]>([]);
-  const [gifs, setGifs] = useState<Gif[]>([]); // state to save gifs
+  const dispatch = useDispatch<AppDispatch>();
+  const gifs = useSelector((state: RootState) => state.gifs.gifs);
+  const [imageUrls, setImageUrls] = useState<string[]>([])
 
   useEffect(() => {
-    const fetchGifs = async () => {
-      try {
-        const gifsData = await getAllGifs();
-        setGifs(gifsData);
-      } catch (error) {
-        console.error("Error loading GIFs", error);
-      }
-    };
-    fetchGifs();
-  }, []);
+    dispatch(fetchGifs())
+  }, [dispatch])
 
   const handleUpload = async (files: File[]) => {
     const uploadedUrls: string[] = [];
 
     for (const file of files) {
-      const fileRef = ref(storage, `images/${file.name}`);
-      await uploadBytes(fileRef, file);
-      const downloadURL = await getDownloadURL(fileRef);
-      uploadedUrls.push(downloadURL);
+      const fileRef = ref(storage, `images/${file.name}`)
+      await uploadBytes(fileRef, file)
+      const downloadURL = await getDownloadURL(fileRef)
+      uploadedUrls.push(downloadURL)
     }
 
     setImageUrls(uploadedUrls);
@@ -36,9 +30,10 @@ export const PageContainer = () => {
 
   return (
     <div>
+      <h1><u>🖼️ GIF Generator Manager 🛠️</u></h1>
       <FileUploader onUpload={handleUpload} />
-      <GifGenerator imageUrls={imageUrls} setGifs={setGifs} /> {/* 📌 Pasamos setGifs */}
-      <GifGallery gifs={gifs} /> {/* 📌 Pasamos gifs */}
+      <GifGenerator imageUrls={imageUrls} />
+      <GifGallery gifs={gifs} />
     </div>
   )
 }

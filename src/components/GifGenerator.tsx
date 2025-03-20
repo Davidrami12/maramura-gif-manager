@@ -1,25 +1,21 @@
 import { useState } from "react";
-import { GifGeneratorProps } from "../types/types";
-import { createGif, getAllGifs } from "../services/api";
+import { useDispatch } from "react-redux";
+import { createGifThunk } from "../store/thunks/gifsThunks";
 import { toast } from "react-toastify";
+import { AppDispatch } from "../store/store";
+import { GifGeneratorProps } from "../types/types";
 
-export const GifGenerator = ({ imageUrls, setGifs }: GifGeneratorProps) => {
-  const [gifUrl, setGifUrl] = useState<string | null>(null);
+export const GifGenerator = ({ imageUrls }: GifGeneratorProps) => {
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch<AppDispatch>()
 
   const generateGifHandler = async () => {
     try {
       setLoading(true);
-      console.log("imageUrls", imageUrls);
-      const response = await createGif(imageUrls);
-      setGifUrl(response.gifUrl);
+      await dispatch(createGifThunk(imageUrls));
       toast.success("GIF generated successfully!");
-
-      // Update the gallery automatically after generating a new GIF
-      const updatedGifs = await getAllGifs();
-      setGifs(updatedGifs);
-
     } catch (error) {
+      console.error("Error: ", error)
       toast.error("Error generating GIF file");
     } finally {
       setLoading(false);
@@ -28,11 +24,10 @@ export const GifGenerator = ({ imageUrls, setGifs }: GifGeneratorProps) => {
 
   return (
     <div>
-      <button onClick={generateGifHandler} disabled={loading || imageUrls.length === 0} style={{ margin: "12px" }}>
-        {loading ? "Generating GIF..." : "Generate GIF"}
-      </button>
       <div>
-        {gifUrl && <img src={gifUrl} alt="GIF" width={200} />}
+        <button onClick={generateGifHandler} disabled={loading || imageUrls.length === 0} style={{ margin: "12px" }}>
+          {loading ? "Generating GIF..." : "Generate GIF"}
+        </button>
       </div>
     </div>
   );

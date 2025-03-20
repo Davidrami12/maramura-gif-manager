@@ -6,6 +6,13 @@ export type Gif = {
   };
 }
 
+export type GifsState = {
+  gifs: Gif[];
+  imageUrls: string[],
+  loading: boolean;
+  error: string | null;
+}
+
 export type GifGalleryProps = {
   gifs: Gif[];
 }
@@ -16,5 +23,5 @@ export type FileUploaderProps = {
 
 export type GifGeneratorProps = {
   imageUrls: string[];
-  setGifs: (gifs: Gif[]) => void;
+  setGifs?: (gifs: Gif[]) => void;
 }

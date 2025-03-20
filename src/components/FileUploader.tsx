@@ -30,7 +30,7 @@ export const FileUploader = ({ onUpload }: FileUploaderProps) => {
 
       <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
         {previews.map((src, index) => (
-          <img key={index} src={src} alt={`preview-${index}`} width={200} />
+          <img key={index} src={src} alt={`preview-${index}`} width={200} height={200}/>
         ))}
       </div>
     </div>
