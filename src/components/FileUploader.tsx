@@ -17,14 +17,17 @@ export const FileUploader = ({ onUpload }: FileUploaderProps) => {
 
     if (validFiles.length > 0) {
       setPreviews(validFiles.map(file => URL.createObjectURL(file)));
-      onUpload(files)
+      onUpload(validFiles);
       toast.success("Files updated correctly!");
     }
   };
 
   return (
     <div>
+      <h2><i>✨ Create GIF</i></h2>
+      <p>Select and upload multiple image files to generate your own GIF:</p>
       <input type="file" multiple accept="image/png, image/jpeg, image/gif" onChange={handleFileChange} />
+
       <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
         {previews.map((src, index) => (
           <img key={index} src={src} alt={`preview-${index}`} width={200} />

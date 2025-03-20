@@ -17,7 +17,7 @@ console.log("FireStore connection successful.");
 
 const corsHandler = cors({ origin: true });
 
-export const generateGif = functions.https.onRequest((req: Request, res: Response) => {
+export const createGif = functions.https.onRequest((req: Request, res: Response) => {
   corsHandler(req, res, async () => {
     if (req.method === "OPTIONS") {
       res.status(204).send(""); // Catch CORS preflight requests
@@ -111,3 +111,30 @@ export const generateGif = functions.https.onRequest((req: Request, res: Respons
 
 
 
+export const getAllGifs = functions.https.onRequest((req: Request, res: Response) => {
+  corsHandler(req, res, async () => { 
+    if (req.method === "OPTIONS") {
+      res.status(204).send(""); // Catch CORS preflight requests
+      return;
+    }
+    
+    if (req.method !== "GET") {
+      res.status(405).send("Method not allowed!");
+      return;
+    }
+  
+    try {
+      const snapshot = await db.collection("gifs").orderBy("createdAt", "desc").get();
+      
+      const gifs = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+  
+      res.status(200).json({ gifs });
+    } catch (error) {
+      console.error("Error getting GIFs: ", error);
+      res.status(500).send("Status 500 - Internal Server Error");
+    }
+  })
+})

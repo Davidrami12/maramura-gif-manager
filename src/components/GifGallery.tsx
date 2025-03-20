@@ -1,25 +1,9 @@
-import { useEffect, useState } from "react";
-import { getAllGifs } from "../services/api";
-import { toast } from "react-toastify";
+import { GifGalleryProps } from "../types/types";
 
-export const GifGallery = () => {
-  const [gifs, setGifs] = useState<{ id: string; gif: { src: string; title: string } }[]>([]);
-  
-  useEffect(() => {
-    const fetchGifs = async () => {
-      try {
-        const gifsData = await getAllGifs();
-        setGifs(gifsData);
-      } catch (error) {
-        toast.error("Error cargando los GIFs");
-      }
-    };
-    fetchGifs();
-  }, []);
-
+export const GifGallery = ({ gifs }: GifGalleryProps) => {
   return (
     <div>
-      <h2>🎞️ GIFs Generados</h2>
+      <h2><i>🎞️ GIFs Gallery</i></h2>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
         {gifs.map(({ id, gif }) => (
           <div key={id} style={{ textAlign: "center" }}>
