@@ -10,11 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.6.1",
     "firebase": "^11.4.0",
     "firebase-tools": "^13.34.0",
     "gif.js": "^0.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-redux": "^9.2.0",
     "react-toastify": "^11.0.5"
   },
   "devDependencies": {
