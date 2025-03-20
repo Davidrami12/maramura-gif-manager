@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import { validateFiles } from "../utils/validations";
 import { FileUploaderProps } from "../types/types";
+import AutoAwesomeTwoToneIcon from '@mui/icons-material/AutoAwesomeTwoTone';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -24,7 +25,7 @@ export const FileUploader = ({ onUpload }: FileUploaderProps) => {
 
   return (
     <div>
-      <h2><i>✨ Create GIF</i></h2>
+      <h2><i><AutoAwesomeTwoToneIcon color="warning"/> Create GIF </i></h2>
       <p>Select and upload multiple image files to generate your own GIF:</p>
       <input type="file" multiple accept="image/png, image/jpeg, image/gif" onChange={handleFileChange} />
 

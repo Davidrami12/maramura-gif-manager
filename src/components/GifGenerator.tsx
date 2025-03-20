@@ -4,6 +4,8 @@ import { createGifThunk } from "../store/thunks/gifsThunks";
 import { toast } from "react-toastify";
 import { AppDispatch } from "../store/store";
 import { GifGeneratorProps } from "../types/types";
+import AddCircleOutlineTwoToneIcon from '@mui/icons-material/AddCircleOutlineTwoTone';
+import CircularProgress from "@mui/material/CircularProgress";
 
 export const GifGenerator = ({ imageUrls }: GifGeneratorProps) => {
   const [loading, setLoading] = useState(false);
@@ -26,7 +28,15 @@ export const GifGenerator = ({ imageUrls }: GifGeneratorProps) => {
     <div>
       <div>
         <button onClick={generateGifHandler} disabled={loading || imageUrls.length === 0} style={{ margin: "12px" }}>
-          {loading ? "Generating GIF..." : "Generate GIF"}
+          {loading ? (
+            <>
+              <CircularProgress size={14} color="inherit" /> Generating GIF...
+            </>
+          ) : (
+            <>
+              <AddCircleOutlineTwoToneIcon fontSize="small" /> Generate GIF
+            </>
+          )}
         </button>
       </div>
     </div>

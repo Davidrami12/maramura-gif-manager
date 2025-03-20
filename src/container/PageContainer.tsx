@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../store/store";
 import { fetchGifs } from "../store/thunks/gifsThunks";
 import { useEffect, useState } from "react";
+import ConstructionSharpIcon from '@mui/icons-material/ConstructionSharp';
+import GifBoxTwoToneIcon from '@mui/icons-material/GifBoxTwoTone';
 
 export const PageContainer = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -30,7 +32,11 @@ export const PageContainer = () => {
 
   return (
     <div>
-      <h1><u>🖼️ GIF Generator Manager 🛠️</u></h1>
+      <h1>
+        <GifBoxTwoToneIcon fontSize="inherit" color="inherit"/>
+        &nbsp;<u>GIF Generator Manager</u>&nbsp;
+        <ConstructionSharpIcon fontSize="inherit" color="inherit"/>
+      </h1>
       <FileUploader onUpload={handleUpload} />
       <GifGenerator imageUrls={imageUrls} />
       <GifGallery gifs={gifs} />

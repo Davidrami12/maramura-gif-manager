@@ -3,6 +3,9 @@ import { useDispatch } from "react-redux";
 import { deleteGifThunk, fetchGifs } from "../store/thunks/gifsThunks";
 import { AppDispatch } from "../store/store";
 import { GifGalleryProps } from "../types/types";
+import DeleteOutlineTwoToneIcon from '@mui/icons-material/DeleteOutlineTwoTone';
+import CircularProgress from "@mui/material/CircularProgress";
+import CollectionsTwoToneIcon from '@mui/icons-material/CollectionsTwoTone';
 import { toast } from "react-toastify";
 
 export const GifGallery = ({ gifs }: GifGalleryProps) => {
@@ -24,7 +27,7 @@ export const GifGallery = ({ gifs }: GifGalleryProps) => {
 
   return (
     <div>
-      <h2><i>🎞️ GIFs Gallery</i></h2>
+      <h2><i><CollectionsTwoToneIcon fontSize="inherit" color="primary"/> GIFs Gallery </i></h2>
       {gifs.length === 0 ? <p>No GIFs available.</p> : null}
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
@@ -39,7 +42,15 @@ export const GifGallery = ({ gifs }: GifGalleryProps) => {
                 disabled={deletingId === id}
                 style={{background: deletingId === id ? "gray" : "red"}}
               >
-                {deletingId === id ? "Deleting..." : "Delete"}
+                {deletingId === id ? (
+                  <>
+                    <CircularProgress size={14} color="inherit" /> Deleting...
+                  </>
+                ) : (
+                  <>
+                    <DeleteOutlineTwoToneIcon fontSize="small" /> Delete
+                  </>
+                )}
               </button>
 
             </div>

@@ -6,9 +6,8 @@ import "./App.css"
 const App = () => {
   return (
     <div>
-      <h1>GIF Generator Manager</h1>
       <PageContainer />
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="top-right" autoClose={3000} theme="dark"/>
     </div>
   );
 }
